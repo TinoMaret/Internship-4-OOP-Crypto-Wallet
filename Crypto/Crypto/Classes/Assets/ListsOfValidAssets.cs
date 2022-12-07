@@ -73,5 +73,49 @@ namespace Crypto.Classes.Assets
             }
             return false;
         }
+
+        public static void ChangeValueOfAnAsset(Guid PassedAdress) {
+            foreach (NonFungibleAsset nonFungibleAsset in ListOfNonFungibleAssets) {
+                if(nonFungibleAsset.AdressOfAsset == PassedAdress){
+                    foreach(FungibleAsset fungibleAsset in ListOfFungibleAssets){
+                        if (fungibleAsset.AdressOfAsset == nonFungibleAsset.AdressOfFungibleItemForValue){
+                            fungibleAsset.ChangeValueInUSD();
+                        }
+                    }
+                }
+            }
+            foreach (FungibleAsset fungibleAsset in ListOfFungibleAssets) {
+                if (fungibleAsset.AdressOfAsset == PassedAdress) {
+                    fungibleAsset.ChangeValueInUSD();
+                }
+            }
+        }
+
+        public static string GetExchangedAssetName(Guid AssetAdress)
+        {
+            foreach (FungibleAsset fungibleAsset in ListOfFungibleAssets)
+            {
+                if (fungibleAsset.AdressOfAsset == AssetAdress)
+                    return fungibleAsset.Name;
+            }
+            foreach (NonFungibleAsset nonFungibleAsset in ListOfNonFungibleAssets) {
+                if(nonFungibleAsset.AdressOfAsset == AssetAdress)
+                    return nonFungibleAsset.Name;
+            }
+            return "";
+        }
+
+        public static bool CheckIfAssetExists(string PassedAdress) {
+            foreach (var asset in ListOfFungibleAssets) {
+                if (asset.AdressOfAsset.ToString() == PassedAdress)
+                    return true;
+            }
+            foreach (var asset in ListOfNonFungibleAssets)
+            {
+                if (asset.AdressOfAsset.ToString() == PassedAdress)
+                    return true;
+            }
+            return false;
+        }
     }
 }

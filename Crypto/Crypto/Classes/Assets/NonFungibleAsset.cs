@@ -15,5 +15,6 @@ namespace Crypto.Classes.Assets
             Value = ValueOfNewAsset;
             AdressOfFungibleItemForValue = AdressOfFungibleItemForValueOfNewAsset;
         }
+
     }
 }

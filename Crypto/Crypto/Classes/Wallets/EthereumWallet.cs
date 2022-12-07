@@ -1,11 +1,4 @@
 ﻿using Crypto.Classes.Assets;
-using Crypto.Classes.Transactions;
-using Crypto.Interfaces;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Crypto.Classes.Wallets
 {
@@ -20,11 +13,7 @@ namespace Crypto.Classes.Wallets
                 ListsOfValidAssets.ListOfNonFungibleAssets[2].AdressOfAsset,
                 ListsOfValidAssets.ListOfNonFungibleAssets[4].AdressOfAsset
             };
-
             ValletType = "ETH";
         }
-
-        
-        
     }
 }

@@ -13,17 +13,13 @@ namespace Crypto.Classes.Transactions
 
 
 
-        public static bool CheckIfAssetIsNonFungible(Guid AdressOfSentAsset)
+
+
+        public override string ToString()
         {
-            foreach (var asset in ListsOfValidAssets.ListOfNonFungibleAssets)
-            {
-                if (asset.AdressOfAsset == AdressOfSentAsset)
-                    return true;
-            }
-            return false;
+            return base.ToString() + $"Non fungible asset ime - {ListsOfValidAssets.GetExchangedAssetName(AssetAdress)}\n" +
+                $"Opozvana - {IsRevoked}";
         }
-
-
 
     }
 }

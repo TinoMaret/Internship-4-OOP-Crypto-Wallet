@@ -1,4 +1,5 @@
-﻿using Crypto.Interfaces;
+﻿using Crypto.Classes.Wallets;
+using Crypto.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -24,6 +25,25 @@ namespace Crypto.Classes.Transactions
             RecievingAdress = AdressOfReciver;
             AssetAdress = AdressOfAsset;
             IsRevoked = false;
+        }
+
+        public static bool CheckIfAssetIsSupported(Guid AdressOfSentAsset, Guid AdressOfRecieveingWallet)
+        {
+            foreach (var wal in ListOfWallets.AllWallets)
+            {
+                if (wal.AdressOfWallet == AdressOfRecieveingWallet)
+                    if (wal.ListOfSupportedAssets.Contains(AdressOfSentAsset))
+                        return true;
+            }
+            return false;
+        }
+
+        public override string ToString()
+        {
+            return $"Id Transakcije - {Id}\n" +
+                $"Datum i vrijeme transakcije {TimeOfTransaction}\n" +
+                $"Adressa walleta koji salje {SendingAdress}\n" +
+                $"Adressa walleta koji prima {RecievingAdress}\n";
         }
     }
 }

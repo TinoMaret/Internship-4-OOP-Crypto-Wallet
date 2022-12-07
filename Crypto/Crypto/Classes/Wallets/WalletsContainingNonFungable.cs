@@ -1,21 +1,21 @@
 ﻿using Crypto.Classes.Assets;
 using Crypto.Classes.Transactions;
 using Crypto.Interfaces;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Crypto.Classes.Wallets
 {
-    public abstract class WalletsContainingNonFungable : Wallet, IFungibleAssetTransaction, INonFungibleAssetTransaction
+    public class WalletsContainingNonFungable : Wallet, INonFungibleAssetTransaction
     {
         public List<Guid> AdressesOfNonFungibleAssets { get; set; }
 
         public WalletsContainingNonFungable() : base()
         {
             AdressesOfNonFungibleAssets = new List<Guid>();
+        }
+
+        public override string ToString()
+        {
+            return base.ToString();
         }
 
         public override double CalculateValueOfAllAssetsInUSD()
@@ -60,7 +60,7 @@ namespace Crypto.Classes.Wallets
 
         public void NonFungibleTransaction(Guid AdressOfSender, Guid AdressOfReciver, Guid AdressOfAsset)
         {
-            if (NonFungibleAssetTransaction.CheckIfAssetIsNonFungible(AdressOfAsset))
+            if (NonFungibleAssetTransaction.CheckIfAssetIsSupported(AdressOfAsset, AdressOfReciver))
             {
                 NonFungibleAssetTransaction NewTransaction = new NonFungibleAssetTransaction(AdressOfSender, AdressOfReciver, AdressOfAsset);
                 WalletsContainingNonFungable SendingWallet = ListOfWallets.GetWalletContainingNonFungibleByAdress(AdressOfSender);
@@ -71,49 +71,15 @@ namespace Crypto.Classes.Wallets
                         SendingWallet.AdressesOfNonFungibleAssets.Remove(NonFungibleAsset);
                     }
                 }
+                SendingWallet.AddAdressOfTransaction(NewTransaction.Id);
                 WalletsContainingNonFungable RecievingWallet = ListOfWallets.GetWalletContainingNonFungibleByAdress(AdressOfReciver);
+                RecievingWallet.AddAdressOfTransaction(NewTransaction.Id);
+                ListsOfValidAssets.ChangeValueOfAnAsset(AdressOfAsset);
                 RecievingWallet.AdressesOfNonFungibleAssets.Add(AdressOfAsset);
             }
+            Console.WriteLine("Ne mogu izvrsiti transakciju(Wallet ne podrzava asset)");
         }
 
-        public void FungibleTransaction(Guid AdressOfSender, Guid AdressOfReciver, Guid AdressOfAsset, double HowMuch)
-        {
-            if (FungibleAssetTransaction.CheckIfAssetIsFungible(AdressOfAsset))
-            {
-                FungibleAssetTransaction NewTransaction = new FungibleAssetTransaction(AdressOfSender, AdressOfReciver, AdressOfAsset, HowMuch);
-                Wallet SendingWallet = ListOfWallets.GetWalletByAdress(AdressOfSender);
-                foreach (var fungibleAsset in SendingWallet.FungibleAssetBalance)
-                {
-                    if (fungibleAsset.Item1 == NewTransaction.AssetAdress)
-                    {
-                        double temp = fungibleAsset.Item2;
-                        SendingWallet.FungibleAssetBalance.Remove(fungibleAsset);
-                        SendingWallet.FungibleAssetBalance.Add((NewTransaction.AssetAdress, temp - HowMuch));
-                    }
-                }
-                Wallet RecievingWallet = ListOfWallets.GetWalletByAdress(AdressOfReciver);
-                List<Guid> ListOfOwnedFungibleAssets = new List<Guid>();
-                foreach (var fungibleAsset in RecievingWallet.FungibleAssetBalance)
-                {
-                    ListOfOwnedFungibleAssets.Add(fungibleAsset.Item1);
-                }
-                if (ListOfOwnedFungibleAssets.Contains(NewTransaction.AssetAdress))
-                {
-                    foreach (var fungibleAsset in RecievingWallet.FungibleAssetBalance)
-                    {
-                        if (fungibleAsset.Item1 == AdressOfAsset)
-                        {
-                            double temp = fungibleAsset.Item2;
-                            RecievingWallet.FungibleAssetBalance.Remove(fungibleAsset);
-                            RecievingWallet.FungibleAssetBalance.Add((NewTransaction.AssetAdress, temp + HowMuch));
-                        }
-                    }
-                }
-                else
-                    RecievingWallet.FungibleAssetBalance.Add((NewTransaction.AssetAdress, HowMuch));
-
-                ListOfTransactions.AddNewTransaction(NewTransaction);
-            }
-        }
+        
     }
 }

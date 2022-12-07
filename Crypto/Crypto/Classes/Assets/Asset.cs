@@ -14,5 +14,12 @@ namespace Crypto.Classes.Assets
             AdressOfAsset = Guid.NewGuid();
             Name = NameOfNewAsset;
         }
+
+
+        public override string ToString()
+        {
+            return $"Adresa asseta - {AdressOfAsset} \n" +
+                $"Ime asseta {Name}";
+        }
     }
 }

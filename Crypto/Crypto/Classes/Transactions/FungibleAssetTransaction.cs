@@ -14,21 +14,16 @@ namespace Crypto.Classes.Transactions
         public double FungibleAssetValueAfterSending { get; set; }
         public double FungibleAssetValueBeforeRecieving { get; set; }
         public double FungibleAssetValueAfterRecieving { get; set; }
-        public FungibleAssetTransaction(Guid AdressOfSender, Guid AdressOfReciver, Guid AdressOfAsset, double HowMuch) : base(AdressOfSender, AdressOfReciver, AdressOfReciver) {
+        public double HowMuch { get; set; }
+        public FungibleAssetTransaction(Guid AdressOfSender, Guid AdressOfReciver, Guid AdressOfAsset, double HowMuchWasExchanged) : base(AdressOfSender, AdressOfReciver, AdressOfReciver) {
+            HowMuch = HowMuchWasExchanged;
             FungibleAssetValueBeforeSending = GetFungibleAssetValueBeforeSending(AdressOfSender, AdressOfAsset);
             FungibleAssetValueAfterSending = GetFungibleAssetValueBeforeSending(AdressOfSender, AdressOfReciver) - HowMuch;
             FungibleAssetValueBeforeRecieving = GetFungibleAssetValueBeforeRecieving(AdressOfReciver, AdressOfAsset);
             FungibleAssetValueAfterRecieving = GetFungibleAssetValueBeforeRecieving(AdressOfReciver, AdressOfAsset) + HowMuch;
-
         }
 
-        public static bool CheckIfAssetIsFungible(Guid AdressOfSentAsset) {
-            foreach (var asset in ListsOfValidAssets.ListOfFungibleAssets) {
-                if(asset.AdressOfAsset == AdressOfSentAsset)
-                    return true;
-            }
-            return false;
-        }
+
 
         public double GetFungibleAssetValueBeforeSending(Guid AdressOfSender, Guid AdressOfAsset)
         {
@@ -58,6 +53,13 @@ namespace Crypto.Classes.Transactions
                 }
             }
             return Value;
+        }
+
+        public override string ToString()
+        {
+            return base.ToString()+ $"Količina - {HowMuch}\n" +
+                $"Fungible Asset Ime - {ListsOfValidAssets.GetExchangedAssetName(AssetAdress)}\n" +
+                $"Opozvana {IsRevoked}";
         }
     }
 }
