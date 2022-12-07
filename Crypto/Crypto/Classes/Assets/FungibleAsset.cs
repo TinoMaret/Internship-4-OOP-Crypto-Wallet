@@ -15,5 +15,11 @@ namespace Crypto.Classes.Assets
             MeasuringUnit = MeasuringUnitOfNewAsset;
             ValueInUSD = ValueInUSDOfNewAsset;
         }
+
+        public void ChangeValueInUSD(Guid AdressOfFungibleAsset) {
+            Random random = new Random();
+            double ChangePercentage = random.Next(-25, 26) / 1000;
+            ValueInUSD += ValueInUSD * ChangePercentage;
+        }
     }
 }

@@ -10,11 +10,11 @@ namespace Crypto.Classes
     public class Transaction
     {
         public Guid Id { get; private set; }
+        public Guid AdressOfAssetInTransaction { get; private set; }
         public DateTime TimeOfTransaction { get; private set; }
         public Guid SendingAdress { get; private set; }
         public Guid RecievingAdress { get; private set; }
         public bool IsRevoked { get; private set; }
-        public List<Transaction> transactions { get; } = new List<Transaction>();
 
         public Transaction(Guid AddresOfSender, Guid AdressOfReciver, Guid AdressOfAsset) {
             Id = Guid.NewGuid();
