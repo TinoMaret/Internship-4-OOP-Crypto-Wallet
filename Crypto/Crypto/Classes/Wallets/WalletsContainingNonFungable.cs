@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Crypto.Classes.Wallets
 {
-    public class WalletsContainingNonFungable:Wallet
+    public abstract class WalletsContainingNonFungable:Wallet
     {
         public List<Guid> AdressesOfNonFungibleAssets = new List<Guid>();
 

@@ -5,22 +5,25 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Crypto.Classes
+namespace Crypto.Classes.Transactions
 {
     public class Transaction
     {
         public Guid Id { get; private set; }
-        public Guid AdressOfAssetInTransaction { get; private set; }
         public DateTime TimeOfTransaction { get; private set; }
         public Guid SendingAdress { get; private set; }
         public Guid RecievingAdress { get; private set; }
+        public Guid AssetAdress { get; private set; }
         public bool IsRevoked { get; private set; }
 
-        public Transaction(Guid AddresOfSender, Guid AdressOfReciver, Guid AdressOfAsset) {
+        public Transaction(Guid AdressOfSender, Guid AdressOfReciver, Guid AdressOfAsset)
+        {
             Id = Guid.NewGuid();
             TimeOfTransaction = DateTime.Now;
-            SendingAdress = AddresOfSender;
+            SendingAdress = AdressOfSender;
             RecievingAdress = AdressOfReciver;
+            AssetAdress = AdressOfAsset;
+            IsRevoked = false;
         }
     }
 }
