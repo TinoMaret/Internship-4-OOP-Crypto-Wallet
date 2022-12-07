@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Crypto.Classes.Assets
 {
-    public class Asset
+    public abstract class Asset
     {
         public Guid AdressOfAsset { get; private set; }
         public string Name { get; private set; }

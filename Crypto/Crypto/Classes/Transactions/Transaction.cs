@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Crypto.Classes.Transactions
 {
-    public class Transaction
+    public abstract class Transaction
     {
         public Guid Id { get; private set; }
         public DateTime TimeOfTransaction { get; private set; }

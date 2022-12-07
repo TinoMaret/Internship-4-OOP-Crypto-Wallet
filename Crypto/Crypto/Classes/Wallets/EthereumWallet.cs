@@ -1,4 +1,6 @@
 ﻿using Crypto.Classes.Assets;
+using Crypto.Classes.Transactions;
+using Crypto.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -21,5 +23,8 @@ namespace Crypto.Classes.Wallets
 
             ValletType = "ETH";
         }
+
+        
+        
     }
 }

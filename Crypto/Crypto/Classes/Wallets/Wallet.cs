@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Crypto.Classes.Wallets
 {
-    public class Wallet
+    public abstract class Wallet
     {
         public Guid AdressOfWallet { get; }
         public List<(Guid, double)> FungibleAssetBalance { get; private set; } = new List<(Guid, double)>();
@@ -19,6 +19,7 @@ namespace Crypto.Classes.Wallets
         public Wallet() {
             AdressOfWallet = Guid.NewGuid();
         }
+
 
         public virtual double CalculateValueOfAllAssetsInUSD() {
             double CalculatedValueOfAllAssetsInUSD = 0;

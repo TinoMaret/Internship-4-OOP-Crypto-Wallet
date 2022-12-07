@@ -11,6 +11,8 @@ namespace Crypto.Classes.Transactions
     {
         public NonFungibleAssetTransaction(Guid AdressOfSender, Guid AdressOfReciver, Guid AdressOfAsset) : base(AdressOfSender, AdressOfReciver, AdressOfReciver) { }
 
+
+
         public static bool CheckIfAssetIsNonFungible(Guid AdressOfSentAsset)
         {
             foreach (var asset in ListsOfValidAssets.ListOfNonFungibleAssets)
@@ -20,5 +22,8 @@ namespace Crypto.Classes.Transactions
             }
             return false;
         }
+
+
+
     }
 }
