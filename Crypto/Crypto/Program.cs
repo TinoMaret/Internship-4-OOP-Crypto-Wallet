@@ -34,12 +34,14 @@ namespace Crypto
                         Console.WriteLine("2 - Transfer");
                         Console.WriteLine("3 - Povijest Transakcija");
                         Console.WriteLine("4 - Povratak na inicijalni meni");
-                        Wallet EnteredWallet = ListOfWallets.GetWalletByAdressString(InputedAdress);
+                        Wallet EnteredWallet = ListOfWallets.GetWalletByAdress(Guid.Parse(InputedAdress));
                         UserChoice = ParsingUserInput(1, 4);
                         switch (UserChoice)
                         {
                             case 1:
                                 EnteredWallet.Portfolio();
+                                Console.WriteLine("Pritisni bilokoji botun za povratak na pocetni meni");
+                                Console.ReadKey();
                                 continue;
                             case 2:
                                 string AdressORecievingWallet = "";
@@ -58,8 +60,17 @@ namespace Crypto
                                         Console.WriteLine("Nepostojeća Adresa");
                                 } while (!ListOfWallets.CheckingIfWalletExists(AdressOfAssetBeingSent));
                                 continue;
-                                if (CheckIfAdressIsPointingToAFungibleAsset(AdressOfAssetBeingSent)) {
-                                    
+                                if (ListsOfValidAssets.CheckIfAdressIsPointingToAFungibleAsset(Guid.Parse(AdressOfAssetBeingSent)))
+                                {
+                                    Console.WriteLine("Unesi kolicinu fungable asseta");
+                                    double quantity = ParseQuantity();
+
+                                    EnteredWallet.FungibleTransaction(EnteredWallet.AdressOfWallet, Guid.Parse(AdressORecievingWallet), Guid.Parse(AdressOfAssetBeingSent), quantity);
+                                }
+                                else
+                                {
+                                    WalletsContainingNonFungable EnteredWalletCasted = EnteredWallet as WalletsContainingNonFungable;
+                                    EnteredWalletCasted.NonFungibleTransaction(EnteredWalletCasted.AdressOfWallet, Guid.Parse(AdressORecievingWallet), Guid.Parse(AdressOfAssetBeingSent));
                                 }
                             case 3:
                                 EnteredWallet.AllDoneTransactions();
@@ -135,7 +146,17 @@ namespace Crypto
             } while (ParsedValue < FirstChoice || ParsedValue > LastChoice);
             return ParsedValue;
         }
-
+        static double ParseQuantity() {
+            bool IfSucceded = false;
+            double ParsedValue = 0;
+            do {
+                IfSucceded = double.TryParse(Console.ReadLine(), out ParsedValue);
+                if (!IfSucceded) {
+                    Console.WriteLine("Neispravan unos");
+                }
+            }while (!IfSucceded);
+            return ParsedValue;
+        }
 
     }
 }
