@@ -1,11 +1,5 @@
 ﻿using Crypto.Classes.Assets;
-using Crypto.Classes.Transactions;
 using Crypto.Interfaces;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Crypto.Classes.Wallets
 {
@@ -15,7 +9,11 @@ namespace Crypto.Classes.Wallets
             ListOfSupportedAssets = new List<Guid> {
                 ListsOfValidAssets.ListOfFungibleAssets[3].AdressOfAsset,
                 ListsOfValidAssets.ListOfFungibleAssets[4].AdressOfAsset,
-                ListsOfValidAssets.ListOfFungibleAssets[5].AdressOfAsset
+                ListsOfValidAssets.ListOfFungibleAssets[5].AdressOfAsset,
+                ListsOfValidAssets.ListOfFungibleAssets[6].AdressOfAsset,
+                ListsOfValidAssets.ListOfFungibleAssets[7].AdressOfAsset,
+                ListsOfValidAssets.ListOfFungibleAssets[8].AdressOfAsset,
+                ListsOfValidAssets.ListOfFungibleAssets[9].AdressOfAsset,
             };
 
             ValletType = "BTC";

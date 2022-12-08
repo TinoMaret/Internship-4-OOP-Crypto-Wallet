@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Crypto.Classes.Transactions
+﻿namespace Crypto.Classes.Transactions
 {
     public static class ListOfTransactions
     {
@@ -12,6 +6,28 @@ namespace Crypto.Classes.Transactions
 
         public static void AddNewTransaction(Transaction NewTransaction) {
             AllTransactions.Add(NewTransaction);
+        }
+
+        public static void RemoveTransaction(Transaction TransactionToRemove) {
+            AllTransactions.Remove(TransactionToRemove);
+        }
+
+        public static bool CheckIfTransactionExists(Guid AdressOfTransactionToRemove) {
+            foreach (var transaction in AllTransactions)
+            {
+                if (transaction.Id == AdressOfTransactionToRemove)
+                    return true;
+            }
+            return false;
+        }
+
+        public static Transaction GetTransactionByAdress(Guid AdressOfTransactionToRemove)
+        {
+            foreach (var transaction in AllTransactions) {
+                if(transaction.Id == AdressOfTransactionToRemove)
+                    return transaction;
+            }
+            return null;
         }
     }
 }

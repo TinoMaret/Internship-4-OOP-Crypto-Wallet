@@ -1,6 +1,6 @@
 ﻿using Crypto.Classes.Assets;
+using Crypto.Classes.Transactions;
 using Crypto.Classes.Wallets;
-using System;
 
 namespace Crypto
 {
@@ -83,13 +83,53 @@ namespace Crypto
                                 continue;
                             case 3:
                                 EnteredWallet.AllDoneTransactions();
-                                Console.WriteLine("Opozovi transakciju");
+                                Console.WriteLine("Opozovi neku od transakcija");
+                                if (YesNoInput()) {
+                                    Console.WriteLine("Unesi adresu tranakcije koju zelis opozvati");
+                                    string InputedAdressOfTransactionToRemove = "";
+                                    do
+                                    {
+                                        InputedAdressOfTransactionToRemove = Console.ReadLine();
+                                        if (!ListOfTransactions.CheckIfTransactionExists(Guid.Parse(InputedAdressOfTransactionToRemove)))
+                                            Console.WriteLine("Ne postoji transakcija s tom adresom");
+                                    } while (!ListOfTransactions.CheckIfTransactionExists(Guid.Parse(InputedAdressOfTransactionToRemove)));
+
+                                    Transaction TransactionToRemove = ListOfTransactions.GetTransactionByAdress(Guid.Parse(InputedAdressOfTransactionToRemove));
+
+                                    Console.WriteLine("Opozovi unesetu transakciju?");
+                                    if (!(TransactionToRemove.SendingAdress == EnteredWallet.AdressOfWallet) && (TransactionToRemove.TimeOfTransaction - DateTime.Now).TotalSeconds > 45 && YesNoInput())
+                                    {
+                                        Console.WriteLine("Nije moguce izvrsiti transakciju");
+                                        if (!(TransactionToRemove.SendingAdress == EnteredWallet.AdressOfWallet))
+                                            Console.WriteLine("Vi niste poslali tu transakciju");
+                                        if ((TransactionToRemove.TimeOfTransaction - DateTime.Now).TotalSeconds > 45)
+                                            Console.WriteLine("Proslo je previse vremena od transakcije");
+                                    }
+                                    else {
+                                        Wallet WalletToRevokeFrom = ListOfWallets.GetWalletByAdress(TransactionToRemove.RecievingAdress);
+                                        Asset AssetToRevoke = ListsOfValidAssets.GetFungibleAssetByAdress(TransactionToRemove.AssetAdress);
+                                        NonFungibleAssetTransaction NonFungibleCastedTransactionToRemove = TransactionToRemove as NonFungibleAssetTransaction;
+                                        if (NonFungibleCastedTransactionToRemove == null)
+                                        {
+                                            FungibleAssetTransaction FungibleCastedTransactionToRemove = TransactionToRemove as FungibleAssetTransaction;
+                                            EnteredWallet.ReturnBalance(AssetToRevoke, FungibleCastedTransactionToRemove.FungibleAssetValueBeforeSending);
+                                            WalletToRevokeFrom.ReturnBalance(AssetToRevoke, FungibleCastedTransactionToRemove.FungibleAssetValueBeforeRecieving);
+                                        }
+                                        else {
+                                            WalletsContainingNonFungable CastedEnteredWallet = EnteredWallet as WalletsContainingNonFungable;
+                                            WalletsContainingNonFungable CastedWalletToRevokeFrom = WalletToRevokeFrom as WalletsContainingNonFungable;
+                                            CastedEnteredWallet.RestoreNonFungibleTransaction(AssetToRevoke);
+                                            CastedWalletToRevokeFrom.RevokeNonFungibleTransaction(AssetToRevoke);
+                                        }
+                                        ListOfTransactions.RemoveTransaction(TransactionToRemove);
+                                    }
+                                }
+
                                 continue;
                             default:
                                 continue;
 
                         }
-                        continue;
                     default:
                         continue;
                 }

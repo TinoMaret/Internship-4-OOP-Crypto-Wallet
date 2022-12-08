@@ -1,10 +1,4 @@
 ﻿using Crypto.Classes.Assets;
-using Crypto.Classes;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Crypto.Interfaces;
 using Crypto.Classes.Transactions;
 
@@ -112,6 +106,11 @@ namespace Crypto.Classes.Wallets
             foreach (Transaction transaction in ListOfDoneTransactions) {
                 Console.WriteLine(transaction.ToString());
             }
+        }
+
+        public void ReturnBalance(Asset AssetToRevoke, double OriginalBalance) {
+            FungibleAssetBalance.Remove(FungibleAssetBalance.Find(t => t.Item1 == AssetToRevoke.AdressOfAsset));
+            FungibleAssetBalance.Add((AssetToRevoke.AdressOfAsset, OriginalBalance));
         }
 
         public override string ToString()

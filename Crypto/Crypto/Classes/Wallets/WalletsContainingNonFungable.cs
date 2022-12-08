@@ -58,6 +58,14 @@ namespace Crypto.Classes.Wallets
             return USDValueOfPassedNonFungableAsset;
         }
 
+        public void RevokeNonFungibleTransaction(Asset AssetToRemove) {
+            AdressesOfNonFungibleAssets.Remove(AssetToRemove.AdressOfAsset);
+        }
+
+        public void RestoreNonFungibleTransaction(Asset AssetToRestore) {
+            AdressesOfNonFungibleAssets.Add(AssetToRestore.AdressOfAsset);
+        }
+
         public void NonFungibleTransaction(Guid AdressOfSender, Guid AdressOfReciver, Guid AdressOfAsset)
         {
             if (NonFungibleAssetTransaction.CheckIfAssetIsSupported(AdressOfAsset, AdressOfReciver) && (AdressesOfNonFungibleAssets.Contains(AdressOfAsset)))
