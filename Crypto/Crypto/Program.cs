@@ -44,14 +44,17 @@ namespace Crypto
                                 Console.ReadKey();
                                 continue;
                             case 2:
+                                Console.WriteLine("Unesi adresu waleta kojemu želiš poslat asset");
                                 string AdressORecievingWallet = "";
                                 do
                                 {
                                     AdressORecievingWallet = Console.ReadLine();
                                     if (!ListOfWallets.CheckingIfWalletExists(AdressORecievingWallet))
                                         Console.WriteLine("Nepostojeća Adresa");
-                                } while (!ListOfWallets.CheckingIfWalletExists(AdressORecievingWallet));
-
+                                    else if (Guid.Parse(AdressORecievingWallet) == EnteredWallet.AdressOfWallet)
+                                        Console.WriteLine("Nije moguce poslati assete samom sebi");
+                                } while ((!ListOfWallets.CheckingIfWalletExists(AdressORecievingWallet)) && Guid.Parse(AdressORecievingWallet) == EnteredWallet.AdressOfWallet);
+                                Console.WriteLine("Unesi adresu asseta kojeg saljes");
                                 string AdressOfAssetBeingSent = "";
                                 do
                                 {
@@ -59,23 +62,28 @@ namespace Crypto
                                     if (!ListsOfValidAssets.CheckIfAssetExists(AdressOfAssetBeingSent))
                                         Console.WriteLine("Nepostojeća Adresa");
                                 } while (!ListOfWallets.CheckingIfWalletExists(AdressOfAssetBeingSent));
-                                continue;
                                 if (ListsOfValidAssets.CheckIfAdressIsPointingToAFungibleAsset(Guid.Parse(AdressOfAssetBeingSent)))
                                 {
                                     Console.WriteLine("Unesi kolicinu fungable asseta");
                                     double quantity = ParseQuantity();
-
-                                    EnteredWallet.FungibleTransaction(EnteredWallet.AdressOfWallet, Guid.Parse(AdressORecievingWallet), Guid.Parse(AdressOfAssetBeingSent), quantity);
+                                    Console.WriteLine("Izvrsiti transakciju?");
+                                    if (YesNoInput())
+                                        EnteredWallet.FungibleTransaction(EnteredWallet.AdressOfWallet, Guid.Parse(AdressORecievingWallet), Guid.Parse(AdressOfAssetBeingSent), quantity);
+                                    else
+                                        Console.WriteLine("Transakcija nije izvrsena");
                                 }
                                 else
                                 {
-                                    WalletsContainingNonFungable EnteredWalletCasted = EnteredWallet as WalletsContainingNonFungable;
-                                    EnteredWalletCasted.NonFungibleTransaction(EnteredWalletCasted.AdressOfWallet, Guid.Parse(AdressORecievingWallet), Guid.Parse(AdressOfAssetBeingSent));
+                                    WalletsContainingNonFungable EnteredWalletCasted = (WalletsContainingNonFungable) EnteredWallet;
+                                    if (YesNoInput())
+                                        EnteredWalletCasted.NonFungibleTransaction(EnteredWalletCasted.AdressOfWallet, Guid.Parse(AdressORecievingWallet), Guid.Parse(AdressOfAssetBeingSent));
+                                    else
+                                        Console.WriteLine("Transakcija nije izvrsena");
                                 }
+                                continue;
                             case 3:
                                 EnteredWallet.AllDoneTransactions();
-                                Console.WriteLine("Pritisni bilokoji botun za povratak na pocetni meni");
-                                Console.ReadKey();
+                                Console.WriteLine("Opozovi transakciju");
                                 continue;
                             default:
                                 continue;

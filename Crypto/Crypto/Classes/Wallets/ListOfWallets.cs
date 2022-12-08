@@ -33,16 +33,6 @@ namespace Crypto.Classes.Wallets
             return NewWallet;
         }
 
-        public static Wallet GetWalletByAdressString(string AdressOfSearchedWallet)
-        {
-            Wallet NewWallet = null;
-            foreach (var wal in AllWallets)
-            {
-                if (wal.AdressOfWallet.ToString() == AdressOfSearchedWallet)
-                    return wal;
-            }
-            return NewWallet;
-        }
 
         public static WalletsContainingNonFungable GetWalletContainingNonFungibleByAdress(Guid AdressOfSearchedWallet)
         {

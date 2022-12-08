@@ -54,16 +54,16 @@ namespace Crypto.Classes.Assets
         }
         //Checking if adress passsed to constructor of NonFungibleAsset class is actually an adress of some fungible asset and if it is adding it to the valid non fungilbe list
         public static bool CheckIfAdressIsPointingToAFungibleAsset(Guid AdressPointingToFungibleAsset) {
-            var found = false;
             foreach (FungibleAsset fungibleAsset in ListOfFungibleAssets) {
                 if (!(fungibleAsset.AdressOfAsset == AdressPointingToFungibleAsset))
                     continue;
 
-                found = true;
+                 return true;
             }
 
-            return found;
+            return false;
         }
+
 
         public static bool AddToListOfNonFungibleAssets(NonFungibleAsset NonFungibleAssetToAddToList) {
             if (CheckIfAdressIsPointingToAFungibleAsset(NonFungibleAssetToAddToList.AdressOfFungibleItemForValue))

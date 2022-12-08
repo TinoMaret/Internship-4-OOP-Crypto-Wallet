@@ -58,7 +58,7 @@ namespace Crypto.Classes.Wallets
 
         public void FungibleTransaction(Guid AdressOfSender, Guid AdressOfReciver, Guid AdressOfAsset, double HowMuch)
         {
-            if (FungibleAssetTransaction.CheckIfAssetIsSupported(AdressOfAsset, AdressOfReciver))
+            if (FungibleAssetTransaction.CheckIfAssetIsSupported(AdressOfAsset, AdressOfReciver) && FungibleAssetBalance.Any(t => t.Item1 == AdressOfAsset && t.Item2>0))
             {
                 FungibleAssetTransaction NewTransaction = new FungibleAssetTransaction(AdressOfSender, AdressOfReciver, AdressOfAsset, HowMuch);
                 Wallet SendingWallet = ListOfWallets.GetWalletByAdress(AdressOfSender);

@@ -60,7 +60,7 @@ namespace Crypto.Classes.Wallets
 
         public void NonFungibleTransaction(Guid AdressOfSender, Guid AdressOfReciver, Guid AdressOfAsset)
         {
-            if (NonFungibleAssetTransaction.CheckIfAssetIsSupported(AdressOfAsset, AdressOfReciver))
+            if (NonFungibleAssetTransaction.CheckIfAssetIsSupported(AdressOfAsset, AdressOfReciver) && (AdressesOfNonFungibleAssets.Contains(AdressOfAsset)))
             {
                 NonFungibleAssetTransaction NewTransaction = new NonFungibleAssetTransaction(AdressOfSender, AdressOfReciver, AdressOfAsset);
                 WalletsContainingNonFungable SendingWallet = ListOfWallets.GetWalletContainingNonFungibleByAdress(AdressOfSender);
